@@ -1,0 +1,229 @@
+<?xml version="1.0" ?>
+<robot name="macroed" xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:property name="bm_bf" value="-0.01" />
+    <xacro:property name="l_braccio" value="0.2" />
+    <xacro:property name="l_avbraccio" value="0.35" />
+    <xacro:property name="l_polsoy" value="0.38" />
+    <xacro:property name="l_polsop" value="0.1" />
+    <xacro:property name="l_polsor" value="0.1" />
+    <xacro:macro name="default_inertial" params="mass">
+        <inertial>
+            <mass value="${mass}" />
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+        </inertial>
+    </xacro:macro>
+    <material name="blue">
+        <color rgba="0 0 0.8 1" />
+    </material>
+    <material name="black">
+        <color rgba="0 0 0 1" />
+    </material>
+    <material name="white">
+        <color rgba="1 1 1 1" />
+    </material>
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://urdf_tutorial/meshes/Link1.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+            <origin rpy="0 0 0" xyz="0.03864 0 0.0206" />
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://urdf_tutorial/meshes/Link1.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+        <xacro:default_inertial mass="1" />
+        <inertial>
+            <mass value="0.1" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
+    </link>
+    <link name="base_mobile">
+        <visual>
+            <geometry>
+                <mesh filename="package://urdf_tutorial/meshes/Link2.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 0.0597" />
+            <material name="blue" />
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://urdf_tutorial/meshes/Link2.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="10" />
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </inertial>
+    </link>
+    <joint name="rot_base" type="revolute">
+        <axis xyz="0 0 1" />
+        <limit effort="1000.0" lower="0.0" upper="6.28" velocity="0.5" />
+        <origin rpy="0 0 0" xyz="0.0101 0 0" />
+        <parent link="base_link" />
+        <child link="base_mobile" />
+    </joint>
+    <link name="braccio">
+        <visual>
+            <geometry>
+                <mesh filename="package://urdf_tutorial/meshes/Link3.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 0.10559" />
+            <material name="blue" />
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://urdf_tutorial/meshes/Link3.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="10" />
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </inertial>
+    </link>
+    <joint name="spalla" type="revolute">
+        <axis xyz="1 0 0" />
+        <limit effort="1000.0" lower="-1.56" upper="1.56" velocity="0.5" />
+        <origin rpy="0 0 0" xyz="0.0106 0 0.08091" />
+        <parent link="base_mobile" />
+        <child link="braccio" />
+    </joint>
+    <link name="av_braccio">
+        <visual>
+            <geometry>
+                <mesh filename="package://urdf_tutorial/meshes/Link4.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+            <origin rpy="0 0 0" xyz="0.0113 0.0415 0 " />
+            <material name="blue" />
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://urdf_tutorial/meshes/Link4.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="10" />
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </inertial>
+    </link>
+    <joint name="gomito" type="revolute">
+        <axis xyz="1 0 0" />
+        <limit effort="1000.0" lower="0" upper="3.14" velocity="0.5" />
+        <origin rpy="0 0 0" xyz="0 0 0.23331" />
+        <parent link="braccio" />
+        <child link="av_braccio" />
+    </joint>
+    <link name="polso_yaw">
+        <visual>
+            <geometry>
+                <mesh filename="package://urdf_tutorial/meshes/Link5.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 0 " />
+            <material name="blue" />
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://urdf_tutorial/meshes/Link5.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="10" />
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </inertial>
+    </link>
+    <joint name="polso_j_yaw" type="revolute">
+        <axis xyz="0 1 0" />
+        <limit effort="1000.0" lower="0" upper="6.28" velocity="0.5" />
+        <origin rpy="0 0 0" xyz="0.0092 0.12499 0.00462" />
+        <parent link="av_braccio" />
+        <child link="polso_yaw" />
+    </joint>
+    <link name="polso_rol">
+        <visual>
+            <geometry>
+                <mesh filename="package://urdf_tutorial/meshes/Link6.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0.01 0 " />
+            <material name="blue" />
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://urdf_tutorial/meshes/Link6.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="10" />
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </inertial>
+    </link>
+    <joint name="polso_j_rol" type="revolute">
+        <axis xyz="1 0 0" />
+        <limit effort="1000.0" lower="-1.56" upper="1.56" velocity="0.5" />
+        <origin rpy="0 0 0" xyz="0.0071 0.03 0" />
+        <parent link="polso_yaw" />
+        <child link="polso_rol" />
+    </joint>
+    <transmission name="trans_rot_base">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="rot_base">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="rot_base_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_spalla">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="spalla">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="spalla_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_gomito">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="gomito">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="gomito_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_polso_j_yaw">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="polso_j_yaw">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="polso_j_yaw_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_polso_j_rol">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="polso_j_rol">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="polso_j_rol_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <gazebo>
+        <plugin name="gazebo_ros_control">
+            <robotNamespace>/</robotNamespace>
+        </plugin>
+    </gazebo>
+</robot>
+
